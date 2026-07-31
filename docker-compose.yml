@@ -1,0 +1,45 @@
+services:
+  pipeline:
+    environment:
+      - OPENAI_API_KEY=ollama
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command:
+      - speech-to-speech
+      - --mode
+      - realtime
+      - --recv_host
+      - 0.0.0.0
+      - --send_host
+      - 0.0.0.0
+      - --stt
+      - parakeet-tdt
+      - --tts
+      - qwen3
+      - --llm_backend
+      - chat-completions
+      - --model_name
+      - qwen3-assistant:latest
+      - --responses_api_base_url
+      - http://192.168.86.8:11434/v1
+      - --chat_size
+      - "10"
+      - --qwen3_tts_model_name
+      - Qwen/Qwen3-TTS-12Hz-1.7B-Base
+      - --qwen3_tts_ref_audio
+      - /ref/tom_servo_ref_long.wav
+      - --qwen3_tts_ref_text
+      - "Hey there, I am Tom Servo, your robot friend! I love movies, especially bad ones. Crow and I watch them all the time up here on the Satellite of Love. Joel and Mike would bring us the worst films they could find!"
+    ports:
+      - 8765:8765/tcp
+    volumes:
+      - ./cache/:/root/.cache/
+      - /home/jstone/piper/voices/tom_servo_ref_long.wav:/ref/tom_servo_ref_long.wav
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]
