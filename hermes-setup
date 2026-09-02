@@ -1,0 +1,32 @@
+└─▪ git diff
+diff --git a/docker-compose.yml b/docker-compose.yml
+index 9cf042b..1b1e770 100644
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -1,7 +1,7 @@
+ services:
+   pipeline:
+     environment:
+-      - OPENAI_API_KEY=ollama
++      - OPENAI_API_KEY=c91a89e4cd99c73aaf453fab50943ca04cdeb75d10ac3b7e0c111615f79d9c94
+     build:
+       context: .
+       dockerfile: Dockerfile
+@@ -22,7 +22,7 @@ services:
+       - --model_name
+       - qwen3-assistant:latest
+       - --responses_api_base_url
+-      - http://192.168.86.8:11434/v1
++      - http://192.168.86.8:8642/v1
+       - --chat_size
+       - "10"
+       - --qwen3_tts_model_name
+@@ -36,6 +36,8 @@ services:
+     volumes:
+       - ./cache/:/root/.cache/
+       - /home/jstone/piper/voices/tom_servo_ref_long.wav:/ref/tom_servo_ref_long.wav
++    extra_hosts:
++      - "host.docker.internal:host-gateway"
+     deploy:
+       resources:
+         reservations:
