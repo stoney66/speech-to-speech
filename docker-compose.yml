@@ -2,6 +2,7 @@ services:
   pipeline:
     environment:
       - OPENAI_API_KEY=ollama
+      - TZ=America/Los_Angeles
     build:
       context: .
       dockerfile: Dockerfile
@@ -20,13 +21,16 @@ services:
       - --llm_backend
       - chat-completions
       - --model_name
-      - gemma-4-e4b
+      - qwen3-5-9b
       - --responses_api_base_url
-      - http://192.168.86.8:9931/v1
+      - http://192.168.86.10:9931/v1
       - --chat_size
-      - "10"
+      - "5"
+      - --no_compact_history
       - --qwen3_tts_model_name
       - Qwen/Qwen3-TTS-12Hz-1.7B-Base
+      - --qwen3_tts_language
+      - en
       - --qwen3_tts_ref_audio
       - /ref/tom_servo_ref_long.wav
       - --qwen3_tts_ref_text
@@ -36,6 +40,7 @@ services:
     volumes:
       - ./cache/:/root/.cache/
       - /home/jstone/piper/voices/tom_servo_ref_long.wav:/ref/tom_servo_ref_long.wav
+      - /etc/localtime:/etc/localtime:ro
     deploy:
       resources:
         reservations:

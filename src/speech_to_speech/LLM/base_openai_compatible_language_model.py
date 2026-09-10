@@ -560,7 +560,6 @@ class BaseOpenAICompatibleHandler(BaseHandler[LLMIn, LLMOut], ABC):
         language_code, lang_name = resolve_auto_language(language_code)
         if lang_name and self.enable_lang_prompt:
             active_chat.add_item(make_user_message(f"Please reply to my message in {lang_name}."))
-
         optional_kwargs = self._build_optional_kwargs(req_tools, req_tool_choice)
 
         # CancelScope.is_stale(gen) is checked when the stream iterator advances; a
